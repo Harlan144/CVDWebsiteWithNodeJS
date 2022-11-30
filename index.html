@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>Predicting Scientific Figures as Colorblind Friendly or Not</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+  <link rel="stylesheet" type="text/css" href="/public/page_styling.css">
+</head>
+<script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@2.0.0/dist/tf.min.js"></script>
+<script src="https://cdn.jsdelivr.net/pyodide/v0.21.3/full/pyodide.js"></script>
+<script src="/public/script.js"></script>
+
+<body>
+  <header>Check Out Our Model in Practice!</header>
+  <div class="flow_box">
+    <div class="container" id="originalImageContainer">
+      
+      <form method="post" action="/upload" enctype="multipart/form-data">
+        <input type="file" name="fileupload" accept="image/*" onchange="display(event)">
+        <button type="submit" name="upload">Upload</button>
+      </form>
+      <p>Your uploaded image will display below:</p>
+      <div id="input_image_container">
+        <img src="/public/defaultimage.png" id="input_image" style="top:10vh;">
+      </div>
+    </div>
+    <i class="arrow right"></i>
+    <div class="container" id="simulatedImageContainer">
+      <input type="button" name="predict" onclick="simulateImage()" value="SHOW SIMULATED IMAGE">
+      <p>Your deuteranopia simulated image will show below:</p>
+      <div id="input_image_container">
+        <img src="/public/converted_image.png" id="output_image">
+      </div>
+      <p>This image is displayed how someone with 80% deuteranopia would see it.</p>
+    </div>
+    <i class="arrow right"></i>
+    <div class="container" id="predictImageContainer">
+      <p>Check how colorblind-friendly your image is! </p>
+      <input type="button" name="predict" onclick="predict_image()" value="PREDICT">
+      <div class="output_screen">
+        <div id="output_chart"></div>
+        <div id="output_text"></div>
+      </div>
+    </div>
+  </div>
+
+</body>
+
+</html>
