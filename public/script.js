@@ -13,13 +13,23 @@ function simulateImage(){
 
 }
 //Display images on website or uploaded by user 
-function display(event) {
+function display() {
     console.log("displayed");
     let input_image = document.getElementById("input_image");
-    let url=URL.createObjectURL(event.target.files[0]);
-    input_image.src = url;
-    document.getElementById("input_image_container").style.display = "block";
+    if(document.getElementById('uploadedFile').files[0]){
+        let url=URL.createObjectURL(document.getElementById('uploadedFile').files[0]);
+        input_image.src = url;
+        document.getElementById("input_image_container").style.display = "block";
+
+    }
 }
+// function display(event) {
+//     console.log("displayed");
+//     let input_image = document.getElementById("input_image");
+//     let url=URL.createObjectURL(event.target.files[0]);
+//     input_image.src = url;
+//     document.getElementById("input_image_container").style.display = "block";
+// }
 
 
 //Predict image and display output

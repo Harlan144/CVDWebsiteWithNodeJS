@@ -2,7 +2,6 @@
 suppressPackageStartupMessages(library(magick))
 suppressPackageStartupMessages(library(tidyverse))
 suppressPackageStartupMessages(library(colorblindr))
-print("hello")
 
 convert_hex_vector_to_image <- function(hex, dimensions) {
   x = col2rgb(hex)
@@ -66,8 +65,7 @@ create_simulated_image = function(in_file_path, out_file_path) {
 }
 
 
-print("Working!")
-
 in_file_path =  paste0(getwd(), "/uploads/image.png")
 out_file_path =  paste0(getwd(),"/uploads/image.png")
 create_simulated_image(in_file_path,out_file_path)
+print("R script ran!")

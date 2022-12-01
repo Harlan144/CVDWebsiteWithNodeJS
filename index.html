@@ -17,8 +17,8 @@
     <div class="container" id="originalImageContainer">
       
       <form method="post" action="/upload" enctype="multipart/form-data">
-        <input type="file" name="fileupload" accept="image/*" onchange="display(event)">
-        <button type="submit" name="upload">Upload</button>
+        <input type="file" name="fileupload" accept="image/*" id="uploadedFile">
+        <button type="submit" name="upload" onclick="display()">UPLOAD</button>
       </form>
       <p>Your uploaded image will display below:</p>
       <div id="input_image_container">
@@ -27,7 +27,9 @@
     </div>
     <i class="arrow right"></i>
     <div class="container" id="simulatedImageContainer">
-      <input type="button" name="predict" onclick="simulateImage()" value="SHOW SIMULATED IMAGE">
+      <form method="post" action="/convert">
+        <button type="submit" name="convert_image" onclick="simulateImage()">SHOW SIMULATED IMAGE</button>
+      </form>
       <p>Your deuteranopia simulated image will show below:</p>
       <div id="input_image_container">
         <img src="/public/converted_image.png" id="output_image">
