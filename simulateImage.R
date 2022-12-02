@@ -66,7 +66,7 @@ create_simulated_image = function(in_file_path, out_file_path) {
 
 
 args = commandArgs(trailingOnly = TRUE)
-in_file_path =  paste0(getwd(), "/uploads/"+toString(args[1])+".png")
-out_file_path =  paste0(getwd(),"/uploads/"+toString(args[1])+".png")
+in_file_path =  paste0(getwd(), "/uploads/",toString(args[1]),".png")
+out_file_path =  paste0(getwd(),"/uploads/",toString(args[1]),".png")
 create_simulated_image(in_file_path,out_file_path)
 print("R script ran!")

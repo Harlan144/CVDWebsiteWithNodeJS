@@ -3,6 +3,7 @@ const app = express();
 const multer = require("multer");
 const upload = multer({ dest: "uploads/" });
 const path = require('path');
+var bodyParser = require('body-parser')
 const fs = require('fs');
 var exec = require('child_process').exec;
 const { v4: uuidv4 } = require('uuid');
@@ -13,28 +14,37 @@ const e = require('express');
 const { type } = require('os');
 
 app.use('/public', express.static(process.cwd() + '/public'));
+app.use('/uploads', express.static('uploads'));
+
+app.use(bodyParser.urlencoded({limit: '50mb', extended: false}));
+
 //app.set('view engine', 'ejs');
 
 
 
-app.post('/upload/id.json', upload.single('fileupload'), async function (req, res) {
-  if (!req.file) {
+app.post('/upload', /*upload.single('fileupload'),*/ async function (req, res) {
+  if (!req) {
     res.status(401).json({ error: 'Please provide an image' });
   }
-  const tempPath = req.file.path;
-  //console.log(tempPath.split("/")[1]);
-  imageID = tempPath.split("/")[1]  //uuidv4();
+  //fs.createWriteStream("try1").write(req.file.buffer);
 
+  //const file = fs.readFileSync(req.body, {encoding: 'base64'});
+
+  //const tempPath = req.file.path;
+  //console.log(tempPath.split("/")[1]);
+  imageID =  uuidv4(); //tempPath.split("/")[1] 
+  let file = req.body.file.replace(/^data:image\/(png|jpg);base64,/,"");
   const targetPath = path.join(__dirname, `./uploads/${imageID}.png`);
-  console.log(targetPath)
-  fs.rename(tempPath, targetPath, err => {
-    if (err) return handleError(err, res);
-  });
+  fs.writeFileSync("buffer64.png", file, {'encoding': 'base64'});
+  const buffer = fs.readFileSync('buffer64.png');
+  fs.writeFileSync(targetPath, buffer);
+
+
 
   console.log("Going through upload...")
-  //return res.json({ id: imageID });
-
-  res.status(204).send();
+  res.json({ id: imageID });
+  
+  //res.status(204).send();
 });
 
 
@@ -62,7 +72,8 @@ app.post("/convert", async(req, res)=> {
   });
 });
 
-app.get("/uploads/"+imageID+".png", (req, res) => {
+app.get("uploads/"+imageID+".png", (req, res) => {
+  
   console.log("sendOver");
   res.sendFile(path.join(__dirname, "/uploads/"+imageID+".png"));
 });

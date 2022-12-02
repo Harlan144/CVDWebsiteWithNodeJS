@@ -9,13 +9,12 @@
 </head>
 <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@2.0.0/dist/tf.min.js"></script>
 <script src="https://cdn.jsdelivr.net/pyodide/v0.21.3/full/pyodide.js"></script>
-<script src="/public/script.js"></script>
-
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
 <body>
   <header>Check Out Our Model in Practice!</header>
   <div class="flow_box">
     <div class="container" id="originalImageContainer">
-      <form method="post" action="/upload/id.json" enctype="multipart/form-data" id="uploadForm">
+      <form id="uploadForm">
         <input type="file" name="fileupload" accept="image/*" id="uploadedFile">
         <button type="submit" name="upload" onclick="display()">UPLOAD</button>
       </form>
@@ -48,6 +47,7 @@
     </div>
   </div>
 
+  <script src="/public/script.js"></script>
 </body>
 
 </html>

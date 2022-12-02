@@ -1,28 +1,66 @@
 
-function simulateImage(){
-    let output_image = document.getElementById("output_image");
-    output_image.src = "public/converted_image.png";
-    if (uploadedFile){ //check if exists
-        output_image.src = "uploads/image.png";
-    }
-    else {
-        console.log("isn't there");
-    }
-    document.getElementById("input_image_container").style.display = "block";
 
+//Display images on website or uploaded by user 
+let myImage = document.getElementById("uploadedFile");
+let uploadForm = document.getElementById("uploadForm");
+
+function getBase64(file) {
+    return new Promise(function(resolve) {
+        var reader = new FileReader();
+        reader.onloadend = function() {
+        resolve(reader.result)
+        }
+        reader.readAsDataURL(file);
+    })
 }
 
 
-//Display images on website or uploaded by user 
-function display() {
+
+// document.getElementById('show_simulated').addEventListener('onclick', function(evt){
+//     let output_image = document.getElementById("output_image");
+//     output_image.src = "uploads/image.png";
+//     document.getElementById("input_image_container").style.display = "block";
+//     console.log("Changed image source");
+// });
+async function display() {
     console.log("displayed");
     let input_image = document.getElementById("input_image");
-    if(document.getElementById('uploadedFile').files[0]){
-        let url=URL.createObjectURL(document.getElementById('uploadedFile').files[0]);
+    if(myImage.files[0]){
+        let image = myImage.files[0];
+        let url=URL.createObjectURL(image);
         input_image.src = url;
         document.getElementById("input_image_container").style.display = "block";
-
     }
+}
+
+let imageID;
+uploadForm.onsubmit = async function(e) {
+    e.preventDefault();
+    //imageTag = document.getElementById("input_image");
+    let base64data;
+    if (myImage.files[0]){
+        base64data= await getBase64(myImage.files[0]);
+        console.log("found file...");
+    }
+    console.log(base64data);
+    console.log("uploaded form.");
+    jQuery.ajax({
+        method: 'POST',
+        url: '/upload',
+        data: {
+            file: base64data
+        }
+    })
+    .done(function (res) {
+        if (res){
+            console.log("Yeeeeeeee");
+            imageID = res.id;
+            console.log(imageID);
+        }
+        else {
+            console.log("wel... that sucked.");
+        }
+    })
 }
 // function display(event) {
 //     console.log("displayed");
@@ -34,6 +72,21 @@ function display() {
 
 
 //Predict image and display output
+
+
+
+function simulateImage(){
+    let output_image = document.getElementById("output_image");
+    output_image.src = "public/converted_image.png";
+    if (imageID){ //check if exists
+        output_image.src = "uploads/"+imageID+".png";
+    }
+    else {
+        console.log("isn't there");
+    }
+    document.getElementById("input_image_container").style.display = "block";
+
+}
 async function predict_image() {
     let input = document.getElementById("output_image");
     //Preprocessing steps 
@@ -80,11 +133,3 @@ async function predict_image() {
         //document.getElementById("output_text").innerHTML = "";
     });
 }
-
-
-// document.getElementById('show_simulated').addEventListener('onclick', function(evt){
-//     let output_image = document.getElementById("output_image");
-//     output_image.src = "uploads/image.png";
-//     document.getElementById("input_image_container").style.display = "block";
-//     console.log("Changed image source");
-// });
