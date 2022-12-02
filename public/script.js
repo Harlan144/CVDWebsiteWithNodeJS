@@ -1,6 +1,3 @@
-let myImage;
-
-
 
 function simulateImage(){
     let output_image = document.getElementById("output_image");

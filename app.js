@@ -5,37 +5,43 @@ const upload = multer({ dest: "uploads/" });
 const path = require('path');
 const fs = require('fs');
 var exec = require('child_process').exec;
-//const ejs = require('ejs');
-let image;
-const makeFilePath = require('./makeFilePath');
+const { v4: uuidv4 } = require('uuid');
+
+let imageID;
+//const makeFilePath = require('./makeFilePath');
 const e = require('express');
+const { type } = require('os');
 
 app.use('/public', express.static(process.cwd() + '/public'));
 //app.set('view engine', 'ejs');
 
 
 
-app.post('/upload', upload.single('fileupload'), async function (req, res) {
+app.post('/upload/id.json', upload.single('fileupload'), async function (req, res) {
   if (!req.file) {
     res.status(401).json({ error: 'Please provide an image' });
   }
   const tempPath = req.file.path;
-  const targetPath = path.join(__dirname, "./uploads/image.png");
-  
+  //console.log(tempPath.split("/")[1]);
+  imageID = tempPath.split("/")[1]  //uuidv4();
+
+  const targetPath = path.join(__dirname, `./uploads/${imageID}.png`);
+  console.log(targetPath)
   fs.rename(tempPath, targetPath, err => {
     if (err) return handleError(err, res);
   });
 
   console.log("Going through upload...")
+  //return res.json({ id: imageID });
+
   res.status(204).send();
-  return;
 });
 
 
 
 app.post("/convert", async(req, res)=> {
   console.log("converting...");
-  exec('Rscript simulateImage.R', function (error, stdout, stderr) {
+  exec('Rscript simulateImage.R '+imageID, function (error, stdout, stderr) {
     if (error) {
       console.log("error");
       console.log(error);
@@ -52,14 +58,13 @@ app.post("/convert", async(req, res)=> {
       console.log(stdout);
       res.status(204).send();
     }
-    image = "./uploads/image.png";
     return;
   });
 });
 
-app.get("/uploads/image.png", (req, res) => {
+app.get("/uploads/"+imageID+".png", (req, res) => {
   console.log("sendOver");
-  res.sendFile(path.join(__dirname, "./uploads/image.png"));
+  res.sendFile(path.join(__dirname, "/uploads/"+imageID+".png"));
 });
 
 

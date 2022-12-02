@@ -15,8 +15,7 @@
   <header>Check Out Our Model in Practice!</header>
   <div class="flow_box">
     <div class="container" id="originalImageContainer">
-      
-      <form method="post" action="/upload" enctype="multipart/form-data">
+      <form method="post" action="/upload/id.json" enctype="multipart/form-data" id="uploadForm">
         <input type="file" name="fileupload" accept="image/*" id="uploadedFile">
         <button type="submit" name="upload" onclick="display()">UPLOAD</button>
       </form>
