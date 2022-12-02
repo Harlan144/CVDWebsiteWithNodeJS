@@ -5,15 +5,15 @@ const upload = multer({ dest: "uploads/" });
 const path = require('path');
 const fs = require('fs');
 var exec = require('child_process').exec;
-
-
+//const ejs = require('ejs');
+let image;
 const makeFilePath = require('./makeFilePath');
+const e = require('express');
 
 app.use('/public', express.static(process.cwd() + '/public'));
+//app.set('view engine', 'ejs');
 
-app.get("/", function (req, res) {
-  res.sendFile(process.cwd() + "/index.html");
-});
+
 
 app.post('/upload', upload.single('fileupload'), async function (req, res) {
   if (!req.file) {
@@ -33,7 +33,7 @@ app.post('/upload', upload.single('fileupload'), async function (req, res) {
 
 
 
-app.post("/convert", (req, res)=> {
+app.post("/convert", async(req, res)=> {
   console.log("converting...");
   exec('Rscript simulateImage.R', function (error, stdout, stderr) {
     if (error) {
@@ -52,6 +52,7 @@ app.post("/convert", (req, res)=> {
       console.log(stdout);
       res.status(204).send();
     }
+    image = "./uploads/image.png";
     return;
   });
 });
@@ -61,8 +62,21 @@ app.get("/uploads/image.png", (req, res) => {
   res.sendFile(path.join(__dirname, "./uploads/image.png"));
 });
 
+
+app.get("/", function (req, res) {
+  
+  // if (!image){
+  //   image = "public/converted_image.png";
+  // }
+
+  // res.render('index', {
+  //   image: image
+  // });
+  res.sendFile(process.cwd() + "/index.html");
+});
 const port = process.env.PORT || 3000;
 
 app.listen(port, function () {
   console.log("Server is running on " + port);
 });
+

@@ -1,8 +1,10 @@
 let myImage;
 
+
+
 function simulateImage(){
     let output_image = document.getElementById("output_image");
-    uploadedFile = "uploads/image.png";
+    output_image.src = "public/converted_image.png";
     if (uploadedFile){ //check if exists
         output_image.src = "uploads/image.png";
     }
@@ -12,6 +14,8 @@ function simulateImage(){
     document.getElementById("input_image_container").style.display = "block";
 
 }
+
+
 //Display images on website or uploaded by user 
 function display() {
     console.log("displayed");
@@ -79,3 +83,11 @@ async function predict_image() {
         //document.getElementById("output_text").innerHTML = "";
     });
 }
+
+
+// document.getElementById('show_simulated').addEventListener('onclick', function(evt){
+//     let output_image = document.getElementById("output_image");
+//     output_image.src = "uploads/image.png";
+//     document.getElementById("input_image_container").style.display = "block";
+//     console.log("Changed image source");
+// });

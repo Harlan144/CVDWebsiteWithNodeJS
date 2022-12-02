@@ -27,9 +27,11 @@
     </div>
     <i class="arrow right"></i>
     <div class="container" id="simulatedImageContainer">
-      <form method="post" action="/convert">
-        <button type="submit" name="convert_image" onclick="simulateImage()">SHOW SIMULATED IMAGE</button>
+      <form method="post" action="/convert" id="simulateForm">
+        <button type="submit" name="convert_image">SIMULATE IMAGE</button>
       </form>
+      <button name="show_image" id="show_simulated" onclick="simulateImage()">SHOW SIMULATED IMAGE</button>
+
       <p>Your deuteranopia simulated image will show below:</p>
       <div id="input_image_container">
         <img src="/public/converted_image.png" id="output_image">
