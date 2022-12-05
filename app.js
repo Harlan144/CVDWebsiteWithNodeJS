@@ -26,22 +26,28 @@ app.post('/upload', /*upload.single('fileupload'),*/ async function (req, res) {
   if (!req) {
     res.status(401).json({ error: 'Please provide an image' });
   }
-  //fs.createWriteStream("try1").write(req.file.buffer);
 
-  //const file = fs.readFileSync(req.body, {encoding: 'base64'});
+  const directory = "uploads";
+  fs.readdir(directory, (err, files) => {
+    if (err) throw err;
+    for (const file of files) {
+      fs.unlink(path.join(directory, file), (err) => {
+        if (err) throw err;
+      });
+    }
+  });
 
-  //const tempPath = req.file.path;
-  //console.log(tempPath.split("/")[1]);
-  imageID =  uuidv4(); //tempPath.split("/")[1] 
-  let file = req.body.file.replace(/^data:image\/(png|jpg);base64,/,"");
+  //Read base64 into buffer then create new file in /uploads
+  imageID =  uuidv4();
+  let file = req.body.file.replace(/^data:image\/(png|jpeg);base64,/,"");
   const targetPath = path.join(__dirname, `./uploads/${imageID}.png`);
-  fs.writeFileSync("buffer64.png", file, {'encoding': 'base64'});
-  const buffer = fs.readFileSync('buffer64.png');
-  fs.writeFileSync(targetPath, buffer);
-
+  fs.writeFileSync(targetPath, file, {'encoding': 'base64'});
+  //const buffer = fs.readFileSync('buffer64.png');
+  //fs.writeFileSync(targetPath, buffer);
 
 
   console.log("Going through upload...")
+
   res.json({ id: imageID });
   
   //res.status(204).send();

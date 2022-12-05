@@ -15,6 +15,7 @@ header{
     padding-top: 20px;
     background-color: #13353a;
     height: 10vh;
+    border-bottom: 1px solid #fff;
 }
 p{
     font-size: 1em;
@@ -99,4 +100,32 @@ p{
         -webkit-transform: rotate(45deg);
     }
 
+}
+button, input {
+  appearance: none;
+  background-color: #05262b;
+  border: 1px solid #93b9be;
+  border-radius: 6px;
+  box-shadow: rgba(27, 31, 35, .1) 0 1px 0;
+  box-sizing: border-box;
+  color: #fff;
+  cursor: pointer;
+  display: inline-block;
+  /*font-family: -apple-system,system-ui,"Segoe UI",Helvetica,Arial,sans-serif,"Apple Color Emoji","Segoe UI Emoji";
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 20px;*/
+  padding: 6px 16px;
+  margin-bottom: 5px;
+  position: relative;
+  text-align: center;
+  user-select: none;
+  -webkit-user-select: none;
+  touch-action: manipulation;
+  vertical-align: middle;
+  white-space: nowrap;
+}
+
+button:hover {
+  background-color: #13353a;
 }
