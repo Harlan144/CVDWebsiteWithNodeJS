@@ -42,7 +42,6 @@ uploadForm.onsubmit = async function(e) {
         base64data= await getBase64(myImage.files[0]);
         console.log("found file...");
     }
-    console.log(base64data);
     console.log("uploaded form.");
     jQuery.ajax({
         method: 'POST',
@@ -51,15 +50,17 @@ uploadForm.onsubmit = async function(e) {
             file: base64data
         }
     })
-    .done(function (res) {
-        if (res){
+    .then(function (res) {
+        if (res.id){
             console.log("Yeeeeeeee");
             imageID = res.id;
-            console.log(imageID);
-        }
-        else {
-            console.log("wel... that sucked.");
-        }
+            return;
+        } 
+        throw new Error('Something went wrong');
+    })
+    .catch((error)=>{
+        console.log("Error in upload.")
+        alert("No image was uploaded. Please try again.");
     })
 }
 // function display(event) {

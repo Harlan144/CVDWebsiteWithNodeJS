@@ -23,8 +23,10 @@ app.use(bodyParser.urlencoded({limit: '50mb', extended: false}));
 
 
 app.post('/upload', /*upload.single('fileupload'),*/ async function (req, res) {
-  if (!req) {
-    res.status(401).json({ error: 'Please provide an image' });
+  if (!req.body.file) {
+    res.status(404).json({ error: 'Please provide an image' });
+    console.log("No file found.")
+    return;
   }
 
   const directory = "uploads";
@@ -47,8 +49,8 @@ app.post('/upload', /*upload.single('fileupload'),*/ async function (req, res) {
 
 
   console.log("Going through upload...")
-
-  res.json({ id: imageID });
+  
+  res.status(200).json({ id: imageID });
   
   //res.status(204).send();
 });
@@ -57,25 +59,30 @@ app.post('/upload', /*upload.single('fileupload'),*/ async function (req, res) {
 
 app.post("/convert", async(req, res)=> {
   console.log("converting...");
-  exec('Rscript simulateImage.R '+imageID, function (error, stdout, stderr) {
-    if (error) {
-      console.log("error");
-      console.log(error);
-      res.send(error);
+  if(imageID){
+    exec('Rscript simulateImage.R '+imageID, function (error, stdout, stderr) {
+      if (error) {
+        console.log("error");
+        console.log(error);
+        res.send(error);
+        return;
+      }
+      else if (stderr) {
+        console.log("stderr")
+        console.log(stderr);
+        res.send(stderr);
+        return;
+      }
+      else if (stdout) {
+        console.log(stdout);
+        res.status(204).send();
+      }
       return;
-    }
-    else if (stderr) {
-      console.log("stderr")
-      console.log(stderr);
-      res.send(stderr);
-      return;
-    }
-    else if (stdout) {
-      console.log(stdout);
-      res.status(204).send();
-    }
-    return;
-  });
+    });
+  } else {
+    console.log("No image was provided");
+    res.status(204).send();
+  }
 });
 
 app.get("uploads/"+imageID+".png", (req, res) => {
